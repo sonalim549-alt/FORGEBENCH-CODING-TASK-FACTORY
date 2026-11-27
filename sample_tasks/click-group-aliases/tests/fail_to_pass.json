@@ -1,0 +1,5 @@
+[
+  "tests/test_feature_group_aliases.py::test_group_alias_resolution_and_cli_invocation",
+  "tests/test_feature_group_aliases.py::test_group_help_displays_aliases_without_altering_unaliased_commands",
+  "tests/test_feature_group_aliases.py::test_group_alias_conflict_and_validation_guards"
+]

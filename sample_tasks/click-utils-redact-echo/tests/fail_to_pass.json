@@ -1,0 +1,5 @@
+[
+  "tests/test_feature_redact_echo.py::test_redact_text_longest_first_and_regex_safe",
+  "tests/test_feature_redact_echo.py::test_redact_text_case_folding_and_min_length",
+  "tests/test_feature_redact_echo.py::test_safe_echo_cli_stdout_and_none_handling"
+]

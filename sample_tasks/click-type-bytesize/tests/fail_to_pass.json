@@ -1,0 +1,6 @@
+[
+  "tests/test_feature_bytesize_type.py::test_bytesize_distinguishes_si_and_iec_units",
+  "tests/test_feature_bytesize_type.py::test_bytesize_case_sensitivity_and_bounds",
+  "tests/test_feature_bytesize_type.py::test_bytesize_rejects_invalid_constructor_and_inputs",
+  "tests/test_feature_bytesize_type.py::test_bytesize_cli_integration"
+]

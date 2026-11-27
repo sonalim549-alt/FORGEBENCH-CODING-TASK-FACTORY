@@ -1,0 +1,141 @@
+{
+  "task_id": "click-group-aliases",
+  "repo_name": "click",
+  "base_commit": "cf19179e8e2fd54c601378cec9e0d21bb12b6fb1",
+  "certified": true,
+  "verified_at": "2026-11-27T05:51:28.432616+00:00",
+  "runtime_env": {
+    "python": "3.13.14",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "test_runner": "pytest"
+  },
+  "gates": [
+    {
+      "name": "gate1_baseline_health",
+      "passed": true,
+      "duration_ms": 10151.67,
+      "summary": "Baseline repository test suite passed cleanly.",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "stdout_tail": "...(truncated)...\n.......... [ 61%]\n.............................ss..........................ssss........... [ 64%]\n.....................ssssssssssss......................ssssss........... [ 67%]\n........................................................................ [ 70%]\n........................................................................ [ 73%]\n........ssss.ssssss..............................s.s.................... [ 76%]\n...............................sssssssssssssssssssssssssssssssssssssssss [ 79%]\nsssssssssssssssssssss...........................................sssss... [ 81%]\nsssss................................................................... [ 84%]\n........................................................................ [ 87%]\n........................................................................ [ 90%]\n........................................................................ [ 93%]\n........................................................................ [ 96%]\n........................................................................ [ 99%]\n...........                                                              [100%]\n2350 passed, 108 skipped, 31000 deselected, 1 xfailed in 6.91s",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate2_missing_feature_detection",
+      "passed": true,
+      "duration_ms": 1262.93,
+      "summary": "Harbor nop verified: feature tests failed on base commit (nop_reward=0.0).",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_feature_group_aliases.py"
+      ],
+      "stdout_tail": "...(truncated)...\nbuteError: 'Group' object has no attribute 'add_alias'\n\ntests\\test_feature_group_aliases.py:54: AttributeError\n_______________ test_group_alias_conflict_and_validation_guards _______________\n\n    def test_group_alias_conflict_and_validation_guards():\n        @click.group()\n        def cli() -> None:\n            pass\n    \n        @cli.command()\n        def deploy() -> None:\n            pass\n    \n        @cli.command()\n        def status() -> None:\n            pass\n    \n        with pytest.raises(ValueError):\n>           cli.add_alias(\"   \", \"deploy\")\n            ^^^^^^^^^^^^^\nE           AttributeError: 'Group' object has no attribute 'add_alias'\n\ntests\\test_feature_group_aliases.py:78: AttributeError\n- generated xml file: C:\\Users\\DELL\\AppData\\Local\\Temp\\forgebench_val_zfbe4dgi\\nop_feature.xml -\n=========================== short test summary info ===========================\nFAILED tests/test_feature_group_aliases.py::test_group_alias_resolution_and_cli_invocation\nFAILED tests/test_feature_group_aliases.py::test_group_help_displays_aliases_without_altering_unaliased_commands\nFAILED tests/test_feature_group_aliases.py::test_group_alias_conflict_and_validation_guards\n3 failed in 0.20s",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate3_incorrect_behavior_mutation",
+      "passed": true,
+      "duration_ms": 4713.45,
+      "summary": "Killed 5/5 targeted AST mutants (100% >= 70% threshold).",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_feature_group_aliases.py"
+      ],
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate4_reference_regression_security",
+      "passed": true,
+      "duration_ms": 10283.46,
+      "summary": "Harbor oracle verified (oracle_reward=1.0): all feature & regression tests passed with 0 HIGH security issues.",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "stdout_tail": "...(truncated)...\n.......... [ 61%]\n................................ss..........................ssss........ [ 64%]\n........................ssssssssssss......................ssssss........ [ 67%]\n........................................................................ [ 70%]\n........................................................................ [ 73%]\n...........ssss.ssssss..............................s.s................. [ 76%]\n..................................ssssssssssssssssssssssssssssssssssssss [ 78%]\nssssssssssssssssssssssss...........................................sssss [ 81%]\n...sssss................................................................ [ 84%]\n........................................................................ [ 87%]\n........................................................................ [ 90%]\n........................................................................ [ 93%]\n........................................................................ [ 96%]\n........................................................................ [ 99%]\n..............                                                           [100%]\n2353 passed, 108 skipped, 31000 deselected, 1 xfailed in 5.92s",
+      "stderr_tail": ""
+    }
+  ],
+  "mutations": [
+    {
+      "mutant_id": "M01",
+      "file_path": "src/click/core.py",
+      "line_number": 1961,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M02",
+      "file_path": "src/click/core.py",
+      "line_number": 1963,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M03",
+      "file_path": "src/click/core.py",
+      "line_number": 1967,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M04",
+      "file_path": "src/click/core.py",
+      "line_number": 1969,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M05",
+      "file_path": "src/click/core.py",
+      "line_number": 1972,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    }
+  ],
+  "mutation_kill_rate": 1.0,
+  "security_findings": [],
+  "nop_reward": 0.0,
+  "oracle_reward": 1.0,
+  "fail_to_pass": [
+    "tests/test_feature_group_aliases.py::test_group_alias_resolution_and_cli_invocation",
+    "tests/test_feature_group_aliases.py::test_group_help_displays_aliases_without_altering_unaliased_commands",
+    "tests/test_feature_group_aliases.py::test_group_alias_conflict_and_validation_guards"
+  ],
+  "pass_to_pass": [
+    "tests/test_commands.py",
+    "tests/test_command_decorators.py",
+    "tests/test_formatting.py",
+    "tests/test_basic.py"
+  ],
+  "artifact_checksums": {
+    "task.toml": "106de20387c68a1e94b3066badb10924bebe3f65d31f8a6e032beeefeebde545",
+    "instruction.md": "519f7fa6b3c1c56a841c7bb3ce9e8d0a69d3b9e1ff2e15ebfdc23340dbeee389",
+    "environment/Dockerfile": "4e458237870481676269b8ecc8dd63f2001c403eae2a1ba1cb76ea59806bb39e",
+    "solution/reference.patch": "2a7089378d5f12bbfdb4876e77db621c4d1251c8f6204f6e9def99dae4f0d304",
+    "tests/test.sh": "ed995cd04ca41b320f27cbd050d693b551dce4d621f19d624801484634a75988"
+  }
+}

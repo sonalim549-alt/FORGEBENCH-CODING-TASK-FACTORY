@@ -1,0 +1,72 @@
+diff --git a/src/click/formatting.py b/src/click/formatting.py
+--- a/src/click/formatting.py
++++ b/src/click/formatting.py
+@@ -298,6 +298,68 @@
+         """Returns the buffer contents."""
+         return "".join(self.buffer)
+ 
++    def write_table(
++        self,
++        headers: cabc.Sequence[str],
++        rows: cabc.Iterable[cabc.Sequence[str]],
++        *,
++        col_spacing: int = 2,
++        max_col_width: int | None = None,
++        border: bool = False,
++    ) -> None:
++        """Write an ANSI-aware multi-column table into the help formatter buffer."""
++        header_cells = [str(h) for h in headers]
++        if not header_cells:
++            raise ValueError("headers must contain at least one column.")
++        if col_spacing < 1:
++            raise ValueError("col_spacing must be at least 1.")
++        if max_col_width is not None and max_col_width < 4:
++            raise ValueError("max_col_width must be at least 4 when specified.")
++
++        col_count = len(header_cells)
++        materialized_rows: list[list[str]] = []
++        for row in rows:
++            cells = [str(cell) for cell in row]
++            if len(cells) != col_count:
++                raise ValueError(
++                    f"Expected {col_count} columns per row, got {len(cells)}."
++                )
++            materialized_rows.append(cells)
++
++        def _clip(text: str) -> str:
++            if max_col_width is not None and term_len(text) > max_col_width:
++                return text[: max_col_width - 3] + "..."
++            return text
++
++        clipped_headers = [_clip(h) for h in header_cells]
++        clipped_rows = [[_clip(c) for c in row] for row in materialized_rows]
++
++        widths = [term_len(h) for h in clipped_headers]
++        for row in clipped_rows:
++            for idx, cell in enumerate(row):
++                widths[idx] = max(widths[idx], term_len(cell))
++
++        indent_prefix = " " * self.current_indent
++        spacer = " " * col_spacing
++
++        def _format_line(cells: list[str]) -> str:
++            parts: list[str] = []
++            last_idx = len(cells) - 1
++            for idx, cell in enumerate(cells):
++                if idx == last_idx:
++                    parts.append(cell)
++                else:
++                    pad = widths[idx] - term_len(cell)
++                    parts.append(cell + (" " * pad))
++            return indent_prefix + spacer.join(parts) + "\n"
++
++        self.write(_format_line(clipped_headers))
++        if border:
++            sep_cells = ["-" * w for w in widths]
++            self.write(_format_line(sep_cells))
++        for row in clipped_rows:
++            self.write(_format_line(row))
++
+ 
+ def join_options(options: cabc.Iterable[str]) -> tuple[str, bool]:
+     """Given a list of option strings this joins them in the most appropriate

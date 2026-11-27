@@ -1,0 +1,142 @@
+{
+  "task_id": "click-type-bytesize",
+  "repo_name": "click",
+  "base_commit": "cf19179e8e2fd54c601378cec9e0d21bb12b6fb1",
+  "certified": true,
+  "verified_at": "2026-11-27T05:51:52.775423+00:00",
+  "runtime_env": {
+    "python": "3.13.14",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "test_runner": "pytest"
+  },
+  "gates": [
+    {
+      "name": "gate1_baseline_health",
+      "passed": true,
+      "duration_ms": 8046.38,
+      "summary": "Baseline repository test suite passed cleanly.",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "stdout_tail": "...(truncated)...\n.......... [ 61%]\n.............................ss..........................ssss........... [ 64%]\n.....................ssssssssssss......................ssssss........... [ 67%]\n........................................................................ [ 70%]\n........................................................................ [ 73%]\n........ssss.ssssss..............................s.s.................... [ 76%]\n...............................sssssssssssssssssssssssssssssssssssssssss [ 79%]\nsssssssssssssssssssss...........................................sssss... [ 81%]\nsssss................................................................... [ 84%]\n........................................................................ [ 87%]\n........................................................................ [ 90%]\n........................................................................ [ 93%]\n........................................................................ [ 96%]\n........................................................................ [ 99%]\n...........                                                              [100%]\n2350 passed, 108 skipped, 31000 deselected, 1 xfailed in 5.78s",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate2_missing_feature_detection",
+      "passed": true,
+      "duration_ms": 919.43,
+      "summary": "Harbor nop verified: feature tests failed on base commit (nop_reward=0.0).",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_feature_bytesize_type.py"
+      ],
+      "stdout_tail": "...(truncated)...\ns.warn(\n                \"'get_binary_stream' is deprecated and will be removed in Click 9.0.\",\n                DeprecationWarning,\n                stacklevel=2,\n            )\n            return _get_binary_stream\n    \n        if name == \"get_text_stream\":\n            from .utils import _get_text_stream\n    \n            warnings.warn(\n                \"'get_text_stream' is deprecated and will be removed in Click 9.0.\",\n                DeprecationWarning,\n                stacklevel=2,\n            )\n            return _get_text_stream\n    \n>       raise AttributeError(name)\nE       AttributeError: ByteSize\n\nsrc\\click\\__init__.py:144: AttributeError\n- generated xml file: C:\\Users\\DELL\\AppData\\Local\\Temp\\forgebench_val_zyquq22v\\nop_feature.xml -\n=========================== short test summary info ===========================\nFAILED tests/test_feature_bytesize_type.py::test_bytesize_distinguishes_si_and_iec_units\nFAILED tests/test_feature_bytesize_type.py::test_bytesize_case_sensitivity_and_bounds\nFAILED tests/test_feature_bytesize_type.py::test_bytesize_rejects_invalid_constructor_and_inputs\nFAILED tests/test_feature_bytesize_type.py::test_bytesize_cli_integration - A...\n4 failed in 0.18s",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate3_incorrect_behavior_mutation",
+      "passed": true,
+      "duration_ms": 4142.83,
+      "summary": "Killed 5/5 targeted AST mutants (100% >= 70% threshold).",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_feature_bytesize_type.py"
+      ],
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate4_reference_regression_security",
+      "passed": true,
+      "duration_ms": 8832.6,
+      "summary": "Harbor oracle verified (oracle_reward=1.0): all feature & regression tests passed with 0 HIGH security issues.",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "stdout_tail": "...(truncated)...\n.......... [ 61%]\n.................................ss..........................ssss....... [ 64%]\n.........................ssssssssssss......................ssssss....... [ 67%]\n........................................................................ [ 70%]\n........................................................................ [ 73%]\n............ssss.ssssss..............................s.s................ [ 76%]\n...................................sssssssssssssssssssssssssssssssssssss [ 78%]\nsssssssssssssssssssssssss...........................................ssss [ 81%]\ns...sssss............................................................... [ 84%]\n........................................................................ [ 87%]\n........................................................................ [ 90%]\n........................................................................ [ 93%]\n........................................................................ [ 96%]\n........................................................................ [ 99%]\n...............                                                          [100%]\n2354 passed, 108 skipped, 31000 deselected, 1 xfailed in 5.66s",
+      "stderr_tail": ""
+    }
+  ],
+  "mutations": [
+    {
+      "mutant_id": "M01",
+      "file_path": "src/click/types.py",
+      "line_number": 1473,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M02",
+      "file_path": "src/click/types.py",
+      "line_number": 1475,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M03",
+      "file_path": "src/click/types.py",
+      "line_number": 1477,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M04",
+      "file_path": "src/click/types.py",
+      "line_number": 1499,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M05",
+      "file_path": "src/click/types.py",
+      "line_number": 1502,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    }
+  ],
+  "mutation_kill_rate": 1.0,
+  "security_findings": [],
+  "nop_reward": 0.0,
+  "oracle_reward": 1.0,
+  "fail_to_pass": [
+    "tests/test_feature_bytesize_type.py::test_bytesize_distinguishes_si_and_iec_units",
+    "tests/test_feature_bytesize_type.py::test_bytesize_case_sensitivity_and_bounds",
+    "tests/test_feature_bytesize_type.py::test_bytesize_rejects_invalid_constructor_and_inputs",
+    "tests/test_feature_bytesize_type.py::test_bytesize_cli_integration"
+  ],
+  "pass_to_pass": [
+    "tests/test_basic.py",
+    "tests/test_options.py",
+    "tests/test_info_dict.py",
+    "tests/test_imports.py"
+  ],
+  "artifact_checksums": {
+    "task.toml": "d50bb8b053c3880d32c1549898f17da90857c1895ba9a5c8f083b8ec1a94bae6",
+    "instruction.md": "b9c19f9e3cc3d9218640edd61961248ad9b9555f4c3943b97978345175112e97",
+    "environment/Dockerfile": "4e458237870481676269b8ecc8dd63f2001c403eae2a1ba1cb76ea59806bb39e",
+    "solution/reference.patch": "f8e9b85a72da7de806e6f1903d093a403936ec75e928bb03ec5eb1bef79ace5d",
+    "tests/test.sh": "af77f05761ac014a8f15f7319979ffdea2af046c9c3253f16175934b662650da"
+  }
+}

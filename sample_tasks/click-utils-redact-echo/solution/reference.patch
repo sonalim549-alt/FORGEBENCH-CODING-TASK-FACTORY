@@ -1,0 +1,76 @@
+diff --git a/src/click/utils.py b/src/click/utils.py
+--- a/src/click/utils.py
++++ b/src/click/utils.py
+@@ -654,6 +654,60 @@
+     return out
+ 
+ 
++def redact_text(
++    text: str,
++    secrets: cabc.Iterable[str | None],
++    *,
++    replacement: str = "[REDACTED]",
++    min_secret_length: int = 1,
++    case_sensitive: bool = True,
++) -> str:
++    """Replace sensitive tokens in ``text`` with ``replacement`` using longest-first matching."""
++    if min_secret_length < 1:
++        raise ValueError("min_secret_length must be at least 1.")
++
++    candidates = sorted(
++        {
++            item
++            for item in secrets
++            if isinstance(item, str) and len(item) >= min_secret_length
++        },
++        key=len,
++        reverse=True,
++    )
++    if not candidates or not text:
++        return text
++
++    flags = 0 if case_sensitive else re.IGNORECASE
++    pattern = re.compile("|".join(re.escape(secret) for secret in candidates), flags)
++    return pattern.sub(lambda _match: replacement, text)
++
++
++def safe_echo(
++    message: t.Any = None,
++    *,
++    secrets: cabc.Iterable[str | None] | None = None,
++    replacement: str = "[REDACTED]",
++    min_secret_length: int = 1,
++    case_sensitive: bool = True,
++    file: t.IO[t.Any] | None = None,
++    nl: bool = True,
++    err: bool = False,
++    color: bool | None = None,
++) -> None:
++    """Echo ``message`` after redacting any supplied secret values."""
++    if message is not None and secrets is not None:
++        text = make_str(message)
++        message = redact_text(
++            text,
++            secrets,
++            replacement=replacement,
++            min_secret_length=min_secret_length,
++            case_sensitive=case_sensitive,
++        )
++    echo(message=message, file=file, nl=nl, err=err, color=color)
++
++
+ def __getattr__(name: str) -> object:
+     import warnings
+ 
+diff --git a/src/click/__init__.py b/src/click/__init__.py
+--- a/src/click/__init__.py
++++ b/src/click/__init__.py
+@@ -71,6 +71,8 @@
+ from .utils import format_filename as format_filename
+ from .utils import get_app_dir as get_app_dir
+ from .utils import open_file as open_file
++from .utils import redact_text as redact_text
++from .utils import safe_echo as safe_echo
+ 
+ 
+ def __getattr__(name: str) -> object:

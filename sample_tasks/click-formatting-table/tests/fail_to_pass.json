@@ -1,0 +1,5 @@
+[
+  "tests/test_feature_formatter_table.py::test_write_table_alignment_border_and_indentation",
+  "tests/test_feature_formatter_table.py::test_write_table_ansi_width_and_truncation",
+  "tests/test_feature_formatter_table.py::test_write_table_empty_rows_and_validation_errors"
+]

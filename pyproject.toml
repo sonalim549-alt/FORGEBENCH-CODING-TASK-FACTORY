@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forgebench"
+version = "0.1.0"
+description = "Reusable coding task factory that synthesizes and 4-gate validates realistic feature-development benchmarks from any Git repository."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+forgebench = "forgebench.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["forgebench*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,26 @@
+version = "1.0"
+
+[metadata]
+task_id = "click-type-duration"
+title = "Add Duration ParamType supporting compound time units and range bounds"
+difficulty = "medium"
+category = "feature-development"
+tags = ["python", "click", "param-type-duration", "feature-development"]
+repository = "pallets/click"
+repository_url = "https://github.com/pallets/click.git"
+base_commit = "cf19179e8e2fd54c601378cec9e0d21bb12b6fb1"
+base_tag = "8.5.1"
+license = "BSD-3-Clause"
+generator_strategy = "forgebench-ast-guided"
+
+[verifier]
+timeout_sec = 300.0
+
+[agent]
+timeout_sec = 600.0
+
+[environment]
+build_timeout_sec = 600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240

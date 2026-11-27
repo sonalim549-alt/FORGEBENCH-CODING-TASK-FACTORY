@@ -1,0 +1,122 @@
+diff --git a/src/click/types.py b/src/click/types.py
+--- a/src/click/types.py
++++ b/src/click/types.py
+@@ -4,6 +4,7 @@
+ import collections.abc as cabc
+ import enum
+ import os
++import re
+ import stat
+ import sys
+ import typing as t
+@@ -1435,3 +1436,99 @@
+     default: str
+     range: str
+     required: str
++
++
++_BYTESIZE_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*([A-Za-z]*)\s*$")
++_BYTESIZE_UNITS_EXACT: dict[str, int] = {
++    "": 1,
++    "B": 1,
++    "KB": 1000,
++    "MB": 1000**2,
++    "GB": 1000**3,
++    "TB": 1000**4,
++    "KiB": 1024,
++    "MiB": 1024**2,
++    "GiB": 1024**3,
++    "TiB": 1024**4,
++}
++_BYTESIZE_UNITS_CI: dict[str, int] = {
++    k.lower(): v for k, v in _BYTESIZE_UNITS_EXACT.items()
++}
++
++
++class ByteSize(ParamType[int]):
++    """Parse human-readable byte sizes distinguishing SI decimal (``KB``, ``MB``)
++    and IEC binary (``KiB``, ``MiB``) units into an integer byte count.
++    """
++
++    name = "bytesize"
++
++    def __init__(
++        self,
++        *,
++        min_bytes: int | None = None,
++        max_bytes: int | None = None,
++        case_sensitive: bool = False,
++    ) -> None:
++        if min_bytes is not None and min_bytes < 0:
++            raise ValueError("min_bytes cannot be negative.")
++        if max_bytes is not None and max_bytes < 0:
++            raise ValueError("max_bytes cannot be negative.")
++        if min_bytes is not None and max_bytes is not None and min_bytes > max_bytes:
++            raise ValueError("min_bytes cannot exceed max_bytes.")
++
++        self.min_bytes = min_bytes
++        self.max_bytes = max_bytes
++        self.case_sensitive = case_sensitive
++
++    def to_info_dict(self) -> dict[str, t.Any]:
++        info_dict = super().to_info_dict()
++        info_dict.update(
++            min_bytes=self.min_bytes,
++            max_bytes=self.max_bytes,
++            case_sensitive=self.case_sensitive,
++        )
++        return info_dict
++
++    def convert(
++        self,
++        value: t.Any,
++        param: Parameter | None,
++        ctx: Context | None,
++    ) -> int:
++        if isinstance(value, bool):
++            self.fail(f"{value!r} is not a valid byte size.", param, ctx)
++
++        if isinstance(value, int):
++            total = value
++        elif isinstance(value, str):
++            match = _BYTESIZE_RE.match(value)
++            if match is None:
++                self.fail(f"{value!r} is not a valid byte size.", param, ctx)
++            magnitude = float(match.group(1))
++            raw_unit = match.group(2)
++            unit_table = (
++                _BYTESIZE_UNITS_EXACT if self.case_sensitive else _BYTESIZE_UNITS_CI
++            )
++            lookup_key = raw_unit if self.case_sensitive else raw_unit.lower()
++            if lookup_key not in unit_table:
++                self.fail(f"Unknown byte size unit {raw_unit!r}.", param, ctx)
++            total = int(round(magnitude * unit_table[lookup_key]))
++        else:
++            self.fail(f"{value!r} is not a valid byte size.", param, ctx)
++
++        if total < 0:
++            self.fail("Byte size cannot be negative.", param, ctx)
++        if self.min_bytes is not None and total < self.min_bytes:
++            self.fail(
++                f"Byte size {total} is smaller than minimum {self.min_bytes}.",
++                param,
++                ctx,
++            )
++        if self.max_bytes is not None and total > self.max_bytes:
++            self.fail(
++                f"Byte size {total} exceeds maximum {self.max_bytes}.",
++                param,
++                ctx,
++            )
++        return total
+diff --git a/src/click/__init__.py b/src/click/__init__.py
+--- a/src/click/__init__.py
++++ b/src/click/__init__.py
+@@ -71,6 +71,7 @@
+ from .utils import format_filename as format_filename
+ from .utils import get_app_dir as get_app_dir
+ from .utils import open_file as open_file
++from .types import ByteSize as ByteSize
+ 
+ 
+ def __getattr__(name: str) -> object:

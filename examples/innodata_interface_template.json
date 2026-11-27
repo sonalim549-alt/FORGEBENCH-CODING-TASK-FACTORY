@@ -1,0 +1,25 @@
+{
+  "layout": "directory",
+  "manifest_filename": "task_manifest.json",
+  "files": {
+    "problem_statement": "requirements.md",
+    "reference_patch": "reference_implementation.patch",
+    "feature_tests_patch": "verification_tests.patch",
+    "validation_report": "validation_evidence.json"
+  },
+  "field_map": {
+    "task_id": "task_id",
+    "title": "title",
+    "repository_name": "repo_name",
+    "starting_commit": "base_commit",
+    "language": "language",
+    "framework": "framework",
+    "test_command": "test_command",
+    "certified": "certified"
+  },
+  "required_fields": [
+    "task_id",
+    "repository_name",
+    "starting_commit"
+  ]
+}

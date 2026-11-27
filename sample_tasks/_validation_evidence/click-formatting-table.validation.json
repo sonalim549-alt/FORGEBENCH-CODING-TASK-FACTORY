@@ -1,0 +1,140 @@
+{
+  "task_id": "click-formatting-table",
+  "repo_name": "click",
+  "base_commit": "cf19179e8e2fd54c601378cec9e0d21bb12b6fb1",
+  "certified": true,
+  "verified_at": "2026-11-27T05:51:27.225457+00:00",
+  "runtime_env": {
+    "python": "3.13.14",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "test_runner": "pytest"
+  },
+  "gates": [
+    {
+      "name": "gate1_baseline_health",
+      "passed": true,
+      "duration_ms": 10106.47,
+      "summary": "Baseline repository test suite passed cleanly.",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "stdout_tail": "...(truncated)...\n.......... [ 61%]\n.............................ss..........................ssss........... [ 64%]\n.....................ssssssssssss......................ssssss........... [ 67%]\n........................................................................ [ 70%]\n........................................................................ [ 73%]\n........ssss.ssssss..............................s.s.................... [ 76%]\n...............................sssssssssssssssssssssssssssssssssssssssss [ 79%]\nsssssssssssssssssssss...........................................sssss... [ 81%]\nsssss................................................................... [ 84%]\n........................................................................ [ 87%]\n........................................................................ [ 90%]\n........................................................................ [ 93%]\n........................................................................ [ 96%]\n........................................................................ [ 99%]\n...........                                                              [100%]\n2350 passed, 108 skipped, 31000 deselected, 1 xfailed in 6.96s",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate2_missing_feature_detection",
+      "passed": true,
+      "duration_ms": 1290.92,
+      "summary": "Harbor nop verified: feature tests failed on base commit (nop_reward=0.0).",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_feature_formatter_table.py"
+      ],
+      "stdout_tail": "...(truncated)...\nong-diagnostic-message\"],\n                [\"billing\", \"DOWN\", \"short\"],\n            ],\n            max_col_width=10,\n            border=False,\n        )\nE       AttributeError: 'HelpFormatter' object has no attribute 'write_table'. Did you mean: 'write_text'?\n\ntests\\test_feature_formatter_table.py:31: AttributeError\n______________ test_write_table_empty_rows_and_validation_errors ______________\n\n    def test_write_table_empty_rows_and_validation_errors():\n        fmt = HelpFormatter()\n>       fmt.write_table([\"ColA\", \"ColB\"], [])\n        ^^^^^^^^^^^^^^^\nE       AttributeError: 'HelpFormatter' object has no attribute 'write_table'. Did you mean: 'write_text'?\n\ntests\\test_feature_formatter_table.py:49: AttributeError\n- generated xml file: C:\\Users\\DELL\\AppData\\Local\\Temp\\forgebench_val_x0xymyrk\\nop_feature.xml -\n=========================== short test summary info ===========================\nFAILED tests/test_feature_formatter_table.py::test_write_table_alignment_border_and_indentation\nFAILED tests/test_feature_formatter_table.py::test_write_table_ansi_width_and_truncation\nFAILED tests/test_feature_formatter_table.py::test_write_table_empty_rows_and_validation_errors\n3 failed in 0.19s",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate3_incorrect_behavior_mutation",
+      "passed": true,
+      "duration_ms": 3620.4,
+      "summary": "Killed 5/5 targeted AST mutants (100% >= 70% threshold).",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_feature_formatter_table.py"
+      ],
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "name": "gate4_reference_regression_security",
+      "passed": true,
+      "duration_ms": 10264.87,
+      "summary": "Harbor oracle verified (oracle_reward=1.0): all feature & regression tests passed with 0 HIGH security issues.",
+      "command": [
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "stdout_tail": "...(truncated)...\n.......... [ 61%]\n................................ss..........................ssss........ [ 64%]\n........................ssssssssssss......................ssssss........ [ 67%]\n........................................................................ [ 70%]\n........................................................................ [ 73%]\n...........ssss.ssssss..............................s.s................. [ 76%]\n..................................ssssssssssssssssssssssssssssssssssssss [ 78%]\nssssssssssssssssssssssss...........................................sssss [ 81%]\n...sssss................................................................ [ 84%]\n........................................................................ [ 87%]\n........................................................................ [ 90%]\n........................................................................ [ 93%]\n........................................................................ [ 96%]\n........................................................................ [ 99%]\n..............                                                           [100%]\n2353 passed, 108 skipped, 31000 deselected, 1 xfailed in 5.92s",
+      "stderr_tail": ""
+    }
+  ],
+  "mutations": [
+    {
+      "mutant_id": "M01",
+      "file_path": "src/click/formatting.py",
+      "line_number": 312,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M02",
+      "file_path": "src/click/formatting.py",
+      "line_number": 314,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M03",
+      "file_path": "src/click/formatting.py",
+      "line_number": 316,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M04",
+      "file_path": "src/click/formatting.py",
+      "line_number": 357,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    },
+    {
+      "mutant_id": "M05",
+      "file_path": "src/click/formatting.py",
+      "line_number": 323,
+      "operator": "if_negate",
+      "description": "Negate branch condition in if-statement",
+      "killed": true,
+      "exit_code": 1
+    }
+  ],
+  "mutation_kill_rate": 1.0,
+  "security_findings": [],
+  "nop_reward": 0.0,
+  "oracle_reward": 1.0,
+  "fail_to_pass": [
+    "tests/test_feature_formatter_table.py::test_write_table_alignment_border_and_indentation",
+    "tests/test_feature_formatter_table.py::test_write_table_ansi_width_and_truncation",
+    "tests/test_feature_formatter_table.py::test_write_table_empty_rows_and_validation_errors"
+  ],
+  "pass_to_pass": [
+    "tests/test_formatting.py",
+    "tests/test_basic.py",
+    "tests/test_commands.py"
+  ],
+  "artifact_checksums": {
+    "task.toml": "84fd039f73f648a5be3ba0e17cb2634826495bc79df9a24f18a2f9a00b346da1",
+    "instruction.md": "cb846c816068d3d7df723c6734edd90d6face2f1788debb2060ed5a13c41fdcc",
+    "environment/Dockerfile": "4e458237870481676269b8ecc8dd63f2001c403eae2a1ba1cb76ea59806bb39e",
+    "solution/reference.patch": "94ebfa95b643a410dba673bb70a3942869531d3705d160d3040912a6ecd2af94",
+    "tests/test.sh": "cffea9604b2301c2f15cdd2f2f3c7c161c633a7865f67fc8d10442a8669e248d"
+  }
+}

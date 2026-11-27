@@ -1,0 +1,6 @@
+[
+  "tests/test_feature_duration_type.py::test_duration_parses_single_compound_and_decimal_units",
+  "tests/test_feature_duration_type.py::test_duration_as_seconds_and_bounds_enforcement",
+  "tests/test_feature_duration_type.py::test_duration_rejects_invalid_constructor_and_inputs",
+  "tests/test_feature_duration_type.py::test_duration_cli_integration"
+]

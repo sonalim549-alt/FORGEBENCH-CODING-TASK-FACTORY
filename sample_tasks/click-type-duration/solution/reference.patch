@@ -1,0 +1,154 @@
+diff --git a/src/click/types.py b/src/click/types.py
+--- a/src/click/types.py
++++ b/src/click/types.py
+@@ -4,11 +4,13 @@
+ import collections.abc as cabc
+ import enum
+ import os
++import re
+ import stat
+ import sys
+ import typing as t
+ import uuid
+ from datetime import datetime
++from datetime import timedelta
+ from gettext import gettext as _
+ from gettext import ngettext
+ 
+@@ -1435,3 +1437,125 @@
+     default: str
+     range: str
+     required: str
++
++
++_DURATION_TOKEN_RE = re.compile(r"(\d+(?:\.\d+)?)\s*(ms|s|m|h|d|w)", re.IGNORECASE)
++_DURATION_UNIT_SECONDS: dict[str, float] = {
++    "ms": 0.001,
++    "s": 1.0,
++    "m": 60.0,
++    "h": 3600.0,
++    "d": 86400.0,
++    "w": 604800.0,
++}
++
++
++class Duration(ParamType[timedelta]):
++    """Parse human-readable duration strings (e.g. ``'30s'``, ``'1h30m'``, ``'500ms'``)
++    into a :class:`datetime.timedelta` (or float seconds when ``as_seconds=True``).
++    """
++
++    name = "duration"
++
++    def __init__(
++        self,
++        *,
++        min_seconds: float | None = None,
++        max_seconds: float | None = None,
++        allow_zero: bool = True,
++        as_seconds: bool = False,
++    ) -> None:
++        if min_seconds is not None and min_seconds < 0:
++            raise ValueError("min_seconds cannot be negative.")
++        if max_seconds is not None and max_seconds < 0:
++            raise ValueError("max_seconds cannot be negative.")
++        if (
++            min_seconds is not None
++            and max_seconds is not None
++            and min_seconds > max_seconds
++        ):
++            raise ValueError("min_seconds cannot exceed max_seconds.")
++
++        self.min_seconds = min_seconds
++        self.max_seconds = max_seconds
++        self.allow_zero = allow_zero
++        self.as_seconds = as_seconds
++
++    def to_info_dict(self) -> dict[str, t.Any]:
++        info_dict = super().to_info_dict()
++        info_dict.update(
++            min_seconds=self.min_seconds,
++            max_seconds=self.max_seconds,
++            allow_zero=self.allow_zero,
++            as_seconds=self.as_seconds,
++        )
++        return info_dict
++
++    def _parse_seconds(
++        self,
++        value: t.Any,
++        param: Parameter | None,
++        ctx: Context | None,
++    ) -> float:
++        if isinstance(value, bool):
++            self.fail(f"{value!r} is not a valid duration.", param, ctx)
++        if isinstance(value, timedelta):
++            return value.total_seconds()
++        if isinstance(value, (int, float)):
++            return float(value)
++        if not isinstance(value, str):
++            self.fail(f"{value!r} is not a valid duration.", param, ctx)
++
++        cleaned = value.strip()
++        if not cleaned or cleaned.startswith("-"):
++            self.fail(f"{value!r} is not a valid duration.", param, ctx)
++
++        pos = 0
++        total_seconds = 0.0
++        matched_any = False
++        while pos < len(cleaned):
++            while pos < len(cleaned) and cleaned[pos].isspace():
++                pos += 1
++            if pos >= len(cleaned):
++                break
++            match = _DURATION_TOKEN_RE.match(cleaned, pos)
++            if match is None:
++                self.fail(f"{value!r} is not a valid duration.", param, ctx)
++            amount = float(match.group(1))
++            unit = match.group(2).lower()
++            total_seconds += amount * _DURATION_UNIT_SECONDS[unit]
++            matched_any = True
++            pos = match.end()
++
++        if not matched_any:
++            self.fail(f"{value!r} is not a valid duration.", param, ctx)
++        return total_seconds
++
++    def convert(
++        self,
++        value: t.Any,
++        param: Parameter | None,
++        ctx: Context | None,
++    ) -> t.Any:
++        seconds = self._parse_seconds(value, param, ctx)
++
++        if seconds < 0:
++            self.fail("Duration cannot be negative.", param, ctx)
++        if not self.allow_zero and seconds == 0:
++            self.fail("Duration must be greater than zero.", param, ctx)
++        if self.min_seconds is not None and seconds < self.min_seconds:
++            self.fail(
++                f"Duration {seconds:g}s is shorter than minimum {self.min_seconds:g}s.",
++                param,
++                ctx,
++            )
++        if self.max_seconds is not None and seconds > self.max_seconds:
++            self.fail(
++                f"Duration {seconds:g}s exceeds maximum {self.max_seconds:g}s.",
++                param,
++                ctx,
++            )
++
++        if self.as_seconds:
++            return seconds
++        return timedelta(seconds=seconds)
+diff --git a/src/click/__init__.py b/src/click/__init__.py
+--- a/src/click/__init__.py
++++ b/src/click/__init__.py
+@@ -71,6 +71,7 @@
+ from .utils import format_filename as format_filename
+ from .utils import get_app_dir as get_app_dir
+ from .utils import open_file as open_file
++from .types import Duration as Duration
+ 
+ 
+ def __getattr__(name: str) -> object:

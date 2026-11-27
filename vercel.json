@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py?route=$1"
+    }
+  ],
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "{sample_tasks/**,forgebench/**}",
+      "excludeFiles": "{repos/**,output_tasks/**,tests/**,*.mp4,*.pdf}"
+    }
+  }
+}

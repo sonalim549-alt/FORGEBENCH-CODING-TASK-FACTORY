@@ -1,0 +1,9 @@
+repos/
+output_tasks/
+tests/
+.pytest_cache/
+__pycache__/
+*.mp4
+*.pdf
+.venv/
+venv/
